@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "772658206376",
+    "project_id": "johnthesis-f72b1",
+    "storage_bucket": "johnthesis-f72b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772658206376:android:ca908243cfcf3b94c6d49d",
+        "android_client_info": {
+          "package_name": "com.John.Thesis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772658206376-rbeh2cqo5q7le5g4jro8cpuctdfnrpnk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.John.Thesis",
+            "certificate_hash": "4f15737af7fb3312bc102b6ec790147dcb370fd3"
+          }
+        },
+        {
+          "client_id": "772658206376-es82km4c16ftlreutkgosa9j31gr6444.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCA-AoDefFRZLiYgE5NBFtDNahTG-43bIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772658206376-es82km4c16ftlreutkgosa9j31gr6444.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
