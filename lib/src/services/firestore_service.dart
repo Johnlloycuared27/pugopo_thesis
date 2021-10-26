@@ -15,13 +15,22 @@ class FirestoreService {
             .toList());
   }
 
-//addbuyer
-  Future<void> setBuyer(Buyers buyers) {
+//editbuyer
+  Future<void> editBuyer(Buyers buyer) {
     var options = SetOptions(merge: true);
     return _db
         .collection('buyers')
-        .doc(buyers.buyerId)
-        .set(buyers.toMap(), options);
+        .doc(buyer.buyerId)
+        .set(buyer.toMap(), options);
+  }
+
+//addbuyer
+  Future<void> addBuyer(Buyers buyer) {
+    var options = SetOptions(merge: true);
+    return _db
+        .collection('buyers')
+        .doc(buyer.buyerId)
+        .set(buyer.toMap(), options);
   }
 
 //update buyer
@@ -30,7 +39,7 @@ class FirestoreService {
         .collection('buyers')
         .doc(buyerId)
         .get()
-        .then((snapshot) => Buyers.fromFirestore(snapshot.data()!));
+        .then((snapshot) => Buyers.fromFirestore(snapshot.data()));
   }
 
   //get buyer list
@@ -64,6 +73,7 @@ class FirestoreService {
   Stream<List<FeedStockModel>> getfeedstocks() {
     return _db
         .collection('feed_stocks')
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .map((query) => query.docs)
         .map((snapshot) => snapshot
@@ -71,8 +81,8 @@ class FirestoreService {
             .toList());
   }
 
-  //add and update feed stocks
-  Future<void> savefeedstocks(FeedStockModel feedStock) {
+  //add feeds
+  Future<void> addfeedstocks(FeedStockModel feedStock) {
     var options = SetOptions(merge: true);
     return _db
         .collection('feed_stocks')
@@ -80,9 +90,18 @@ class FirestoreService {
         .set(feedStock.toMap(), options);
   }
 
+//edit buyer
+  Future<FeedStockModel> fectchfeed(String feedstockId) {
+    return _db
+        .collection('feed_stocks')
+        .doc(feedstockId)
+        .get()
+        .then((snapshot) => FeedStockModel.fromFirestore(snapshot.data()));
+  }
+
   //delete feed stocks
-  Future<void> removefeedStock(String stockId) {
-    return _db.collection('feed_stock').doc(stockId).delete();
+  Future<void> removefeedStock(String feedstockId) {
+    return _db.collection('feed_stocks').doc(feedstockId).delete();
   }
 
   //get vitamins stocks

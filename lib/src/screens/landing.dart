@@ -92,7 +92,7 @@ class _LandingState extends State<Landing> {
 
   Widget pageBody(BuildContext context) {
     return StaggeredGridView.count(
-      crossAxisCount: 1,
+      crossAxisCount: 2,
       crossAxisSpacing: 12.0,
       mainAxisSpacing: 12.0,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20.0),
@@ -100,22 +100,44 @@ class _LandingState extends State<Landing> {
         GestureDetector(
             child: MyItems(Icons.graphic_eq, "Buyer List", 0xffed622b),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/welcome');
+              Navigator.pushReplacementNamed(context, '/buyerwidget');
             }),
         GestureDetector(
-          child: MyItems(Icons.bookmark, "Harvest Chart", 0xff26cb3c),
+          child: MyItems(Icons.agriculture, "Harvest Stocks", 0xff26cb3c),
           onTap: () {
-            Navigator.pushReplacementNamed(context, '/welcome');
+            Navigator.pushReplacementNamed(context, '/harveststock');
           },
         ),
         GestureDetector(
-          child: MyItems(Icons.settings, "Poultry Stocks", 0xffff3266),
+          child: MyItems(Icons.food_bank, "Feed Stock", 0xffff3266),
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/feedstockhome');
+          },
+        ),
+        GestureDetector(
+          child: MyItems(Icons.medication, "Vitamin Stock", 0xFF9C27B0),
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/vitaminstock');
+          },
+        ),
+        GestureDetector(
+          child: MyItems(Icons.bar_chart, "Harvest Charts", 0xff2196f3),
+          onTap: () {
+            Navigator.pushReplacementNamed(context, '/stockhome');
+          },
+        ),
+        GestureDetector(
+          child: MyItems(Icons.settings, "Poultry Charts", 0xff2196f3),
           onTap: () {
             Navigator.pushReplacementNamed(context, '/stockhome');
           },
         ),
       ],
       staggeredTiles: [
+        StaggeredTile.extent(1, 150),
+        StaggeredTile.extent(1, 150),
+        StaggeredTile.extent(1, 150),
+        StaggeredTile.extent(1, 150),
         StaggeredTile.extent(1, 150),
         StaggeredTile.extent(1, 150),
         StaggeredTile.extent(1, 150),

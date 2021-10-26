@@ -13,6 +13,7 @@ class AppCard extends StatelessWidget {
   final int? numberOfTray;
   final double? price;
   final String? note;
+  final String? imageUrl;
 
   final formatCurrency = NumberFormat.simpleCurrency();
 
@@ -24,6 +25,7 @@ class AppCard extends StatelessWidget {
     required this.date,
     required this.numberOfTray,
     required this.price,
+    this.imageUrl,
     this.note = "",
   });
 
@@ -47,10 +49,18 @@ class AppCard extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.only(right: 10.0, bottom: 10.0, top: 10.0),
-                child: Image.asset(
-                  'assets/images/logo2.jpg',
-                  height: 100.0,
-                ),
+                child: (imageUrl != null && imageUrl != "")
+                    ? ClipRRect(
+                        child: Image.network(
+                          imageUrl!,
+                          height: 100.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      )
+                    : Image.asset(
+                        'assets/images/logo2.jpg',
+                        height: 100.0,
+                      ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,19 +71,19 @@ class AppCard extends StatelessWidget {
                   ),
                   Text(
                     poultry!,
-                    style: TextStyles.body,
+                    style: TextStyles.body2,
                   ),
                   Text(
                     ('$number'),
-                    style: TextStyles.body,
+                    style: TextStyles.body2,
                   ),
                   Text(
                     address!,
-                    style: TextStyles.body,
+                    style: TextStyles.body2,
                   ),
                   Text(
                     date!,
-                    style: TextStyles.body,
+                    style: TextStyles.body2,
                   ),
                   Text(
                     ('$numberOfTray'),

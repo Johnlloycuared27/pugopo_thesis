@@ -27,6 +27,12 @@ abstract class TextStyles {
             fontSize: 20.0));
   }
 
+  static TextStyle get subtitle3 {
+    return GoogleFonts.economica(
+        textStyle: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0));
+  }
+
   static TextStyle get listTitle {
     return GoogleFonts.economica(
         textStyle: TextStyle(
@@ -49,6 +55,11 @@ abstract class TextStyles {
   static TextStyle get body {
     return GoogleFonts.roboto(
         textStyle: TextStyle(color: AppColors.darkgray, fontSize: 16.0));
+  }
+
+  static TextStyle get body2 {
+    return GoogleFonts.roboto(
+        textStyle: TextStyle(color: AppColors.darkgray, fontSize: 12.0));
   }
 
   static TextStyle get bodyLightBlue {

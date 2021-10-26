@@ -6,7 +6,7 @@ import 'package:thesis_auth/src/models/feedstock_model.dart';
 import 'package:thesis_auth/src/services/firestore_service.dart';
 import 'package:uuid/uuid.dart';
 
-class FeedBloc {
+class editFeedBloc {
   final _date = BehaviorSubject<String>();
   final _numberfeedstock = BehaviorSubject<String>();
   final _feedSaved = PublishSubject<bool>();
@@ -16,7 +16,6 @@ class FeedBloc {
   var uuid = Uuid();
 
 //get
-
   Stream<String> get date => _date.stream.transform(validateDate);
   Stream<int> get numberfeedstock =>
       _numberfeedstock.stream.transform(validateNumFeedStock);
@@ -27,7 +26,9 @@ class FeedBloc {
   Stream<bool> get feedSaved => _feedSaved.stream;
   Future<FeedStockModel> fetchfeed(String feedstockId) =>
       db.fectchfeed(feedstockId);
-  Stream<DateTime> get date1 => _date1;
+  Future<void>? removefeed(String feedstockId) =>
+      db.removefeedStock(feedstockId);
+  Stream<DateTime> get date1 => _date1.stream;
 
 //set
   Function(DateTime) get changeDate1 => _date1.sink.add;
@@ -70,15 +71,19 @@ class FeedBloc {
     }
   });
 
-  Future<void> addFeedStock() async {
+  Future<void> editFeedStock() async {
     var feedStock = FeedStockModel(
         timestamp: Timestamp.now(),
         date: _date.value,
         numberfeedStock: int.parse(_numberfeedstock.value),
-        feedstockId: uuid.v4());
+        feedstockId: _cfeed.value.feedstockId);
     return db
         .addfeedstocks(feedStock)
         .then((value) => _feedSaved.sink.add(true))
         .catchError((error) => _feedSaved.sink.add(false));
+  }
+
+  removeFeeds(String feedstockId) {
+    db.removefeedStock(feedstockId);
   }
 }

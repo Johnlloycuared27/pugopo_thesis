@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:thesis_auth/src/bloc/buyer_bloc.dart';
+import 'package:thesis_auth/src/styles/base.dart';
 import 'package:thesis_auth/src/styles/color.dart';
 import 'package:thesis_auth/src/widgets/button.dart';
 import 'package:thesis_auth/src/widgets/dropdown.dart';
@@ -69,8 +70,8 @@ class _addBuyerState extends State<addBuyer> {
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
-                hintText: 'Buyer Name',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                hintText: 'Customer Name',
+                materialIcon: FontAwesomeIcons.userAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 onChanged: buyerBloc.changeBuyerName,
               );
@@ -81,7 +82,7 @@ class _addBuyerState extends State<addBuyer> {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Contact Number',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.phoneAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 onChanged: buyerBloc.changeContact,
               );
@@ -92,7 +93,7 @@ class _addBuyerState extends State<addBuyer> {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Address',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.mapMarkedAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 onChanged: buyerBloc.changeAddress,
               );
@@ -103,7 +104,7 @@ class _addBuyerState extends State<addBuyer> {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Date',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.calendarAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 onChanged: buyerBloc.changeDate,
               );
@@ -114,7 +115,7 @@ class _addBuyerState extends State<addBuyer> {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Number of tray',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.layerGroup,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 onChanged: buyerBloc.changeNumtray,
               );
@@ -125,15 +126,11 @@ class _addBuyerState extends State<addBuyer> {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Price',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.dollarSign,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 onChanged: buyerBloc.changePrice,
               );
             }),
-        AppButton(
-            buttonText: 'Add Image',
-            buttonType: ButtonType.Straw,
-            onPressed: () {}),
         StreamBuilder<bool>(
             stream: buyerBloc.isValid,
             builder: (context, snapshot) {
@@ -144,7 +141,41 @@ class _addBuyerState extends State<addBuyer> {
                     : ButtonType.Disabled,
                 onPressed: buyerBloc.addBuyer,
               );
-            })
+            }),
+        StreamBuilder<bool>(
+          stream: buyerBloc.isUploading,
+          builder: (context, snapshot) {
+            return (!snapshot.hasData || snapshot.data == false)
+                ? Container()
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          },
+        ),
+        StreamBuilder<String>(
+            stream: buyerBloc.imageUrl,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data == "")
+                return AppButton(
+                  buttonType: ButtonType.Straw,
+                  buttonText: 'Add Image',
+                  onPressed: buyerBloc.pickImage,
+                );
+
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: BaseStyles.listPadding,
+                    child: Image.network(snapshot.data!),
+                  ),
+                  AppButton(
+                    buttonType: ButtonType.Straw,
+                    buttonText: 'Change Image',
+                    onPressed: buyerBloc.pickImage,
+                  )
+                ],
+              );
+            }),
       ],
     );
   }

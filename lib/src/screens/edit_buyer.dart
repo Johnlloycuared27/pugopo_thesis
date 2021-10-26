@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:thesis_auth/src/bloc/buyer_bloc.dart';
+import 'package:thesis_auth/src/bloc/editbuyer_bloc.dart';
 import 'package:thesis_auth/src/models/buyer_model.dart';
+import 'package:thesis_auth/src/styles/base.dart';
 import 'package:thesis_auth/src/styles/color.dart';
 import 'package:thesis_auth/src/widgets/button.dart';
 import 'package:thesis_auth/src/widgets/dropdown.dart';
@@ -22,15 +23,13 @@ class EditBuyer extends StatefulWidget {
 class _EditBuyerState extends State<EditBuyer> {
   Object? get isEmpty => null;
 
-  get buyers => null;
-
   @override
   void initState() {
-    var buyerBloc = Provider.of<BuyerBloc>(context, listen: false);
-    buyerBloc.buyerSaved.listen((saved) {
-      if (saved != isEmpty && saved == true) {
+    var editbuyerBloc = Provider.of<editBuyerBloc>(context, listen: false);
+    editbuyerBloc.buyerSaved.listen((saved) {
+      if (saved != isEmpty && saved == true && context != isEmpty) {
         Fluttertoast.showToast(
-            msg: "Product Saved",
+            msg: "Update Success",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.CENTER,
             timeInSecForIosWeb: 2,
@@ -46,10 +45,10 @@ class _EditBuyerState extends State<EditBuyer> {
 
   @override
   Widget build(BuildContext context) {
-    var buyerBloc = Provider.of<BuyerBloc>(context);
+    var editbuyerBloc = Provider.of<editBuyerBloc>(context);
 
     return FutureBuilder<Buyers>(
-      future: buyerBloc.fetchBuyer(widget.buyerId!),
+      future: editbuyerBloc.fetchBuyer(widget.buyerId!),
       builder: (context, snapshot) {
         if (!snapshot.hasData && widget.buyerId != null) {
           return Scaffold(
@@ -62,148 +61,179 @@ class _EditBuyerState extends State<EditBuyer> {
         if (widget.buyerId != null) {
           //Edit Logic
           existingBuyer = snapshot.data!;
-          loadValues(buyerBloc, existingBuyer);
+          loadValues(editbuyerBloc, existingBuyer);
         } else {
           //Add Logic
 
         }
         return AppSliverScaffold.materialSliverScaffold(
-            navTitle: 'Edit Buyer             ',
-            pageBody: pageBody(buyerBloc, context, existingBuyer),
+            navTitle: 'Edit Suctomer             ',
+            pageBody: pageBody(editbuyerBloc, context, existingBuyer),
             context: context);
       },
     );
   }
 
   Widget pageBody(
-      BuyerBloc buyerBloc, BuildContext context, Buyers existingBuyer) {
+      editBuyerBloc editbuyerBloc, BuildContext context, Buyers existingBuyer) {
     var items = Provider.of<List<String>?>(context);
     return ListView(
       children: <Widget>[
         StreamBuilder<String>(
-            stream: buyerBloc.poultry,
+            stream: editbuyerBloc.poultry,
             builder: (context, snapshot) {
               return AppDropDownButton(
                 hintText: 'Unit Type',
                 items: items,
                 value: snapshot.data,
-                onChanged: buyerBloc.changePoultry,
+                onChanged: editbuyerBloc.changePoultry,
               );
             }),
         StreamBuilder<String>(
-            stream: buyerBloc.buyerName,
+            stream: editbuyerBloc.buyerName,
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
-                hintText: 'Buyer Name',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                hintText: 'Customer Name',
+                materialIcon: FontAwesomeIcons.userAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 initialText:
                     (existingBuyer != isEmpty) ? existingBuyer.buyerName : null,
-                onChanged: buyerBloc.changeBuyerName,
+                onChanged: editbuyerBloc.changeBuyerName,
               );
             }),
         StreamBuilder<int>(
-            stream: buyerBloc.contactNumber,
+            stream: editbuyerBloc.contactNumber,
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Contact Number',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.phoneAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 initialText: (existingBuyer != isEmpty)
                     ? existingBuyer.contactNum.toString()
                     : null,
-                onChanged: buyerBloc.changeContact,
+                onChanged: editbuyerBloc.changeContact,
               );
             }),
         StreamBuilder<String>(
-            stream: buyerBloc.address,
+            stream: editbuyerBloc.address,
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Address',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.mapMarkerAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 initialText:
                     (existingBuyer != isEmpty) ? existingBuyer.address : null,
-                onChanged: buyerBloc.changeAddress,
+                onChanged: editbuyerBloc.changeAddress,
               );
             }),
         StreamBuilder<String>(
-            stream: buyerBloc.date,
+            stream: editbuyerBloc.date,
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Date',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.calendarAlt,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 initialText:
                     (existingBuyer != isEmpty) ? existingBuyer.date : null,
-                onChanged: buyerBloc.changeDate,
+                onChanged: editbuyerBloc.changeDate,
               );
             }),
         StreamBuilder<int>(
-            stream: buyerBloc.numberTray,
+            stream: editbuyerBloc.numberTray,
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Number of tray',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.layerGroup,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 initialText: (existingBuyer != isEmpty)
                     ? existingBuyer.numofTray.toString()
                     : null,
-                onChanged: buyerBloc.changeNumtray,
+                onChanged: editbuyerBloc.changeNumtray,
               );
             }),
         StreamBuilder<double>(
-            stream: buyerBloc.price,
+            stream: editbuyerBloc.price,
             builder: (context, snapshot) {
               if (snapshot == isEmpty) return Container();
               return AppTextField(
                 hintText: 'Price',
-                materialIcon: FontAwesomeIcons.peopleCarry,
+                materialIcon: FontAwesomeIcons.dollarSign,
                 errorText: snapshot.hasError ? snapshot.error.toString() : "",
                 initialText: (existingBuyer != isEmpty)
                     ? existingBuyer.unitPrice.toString()
                     : null,
-                onChanged: buyerBloc.changePrice,
+                onChanged: editbuyerBloc.changePrice,
               );
             }),
-        AppButton(
-            buttonText: 'Add Image',
-            buttonType: ButtonType.Straw,
-            onPressed: () {}),
         StreamBuilder<bool>(
-            stream: buyerBloc.isValid,
+            stream: editbuyerBloc.isValid,
             builder: (context, snapshot) {
               return AppButton(
                 buttonText: 'Submitt',
                 buttonType: (snapshot.data == true)
                     ? ButtonType.DarkBlue
                     : ButtonType.Disabled,
-                onPressed: buyerBloc.editBuyer,
+                onPressed: editbuyerBloc.editBuyer,
               );
-            })
+            }),
+        StreamBuilder<bool>(
+          stream: editbuyerBloc.isUploading,
+          builder: (context, snapshot) {
+            return (!snapshot.hasData || snapshot.data == false)
+                ? Container()
+                : Center(
+                    child: CircularProgressIndicator(),
+                  );
+          },
+        ),
+        StreamBuilder<String>(
+            stream: editbuyerBloc.imageUrl,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data == "")
+                return AppButton(
+                  buttonType: ButtonType.Straw,
+                  buttonText: 'Add Image',
+                  onPressed: editbuyerBloc.pickImage,
+                );
+
+              return Column(
+                children: <Widget>[
+                  Padding(
+                    padding: BaseStyles.listPadding,
+                    child: Image.network(snapshot.data!),
+                  ),
+                  AppButton(
+                    buttonType: ButtonType.Straw,
+                    buttonText: 'Change Image',
+                    onPressed: editbuyerBloc.pickImage,
+                  )
+                ],
+              );
+            }),
       ],
     );
   }
 
   loadValues(
-    BuyerBloc buyerBloc,
-    Buyers buyers,
+    editBuyerBloc buyerBloc,
+    Buyers buyer,
   ) {
-    buyerBloc.changeBuyer(buyers);
-    if (buyers != isEmpty) {
+    buyerBloc.changeBuyer(buyer);
+    if (buyer != isEmpty) {
       //Edit
-      buyerBloc.changeBuyerName(buyers.buyerName!);
-      buyerBloc.changeContact(buyers.contactNum.toString());
-      buyerBloc.changeAddress(buyers.address!);
-      buyerBloc.changeDate(buyers.date!);
-      buyerBloc.changeNumtray(buyers.numofTray.toString());
-      buyerBloc.changePrice(buyers.unitPrice.toString());
-      buyerBloc.changePoultry(buyers.Poultry!);
+      buyerBloc.changeBuyerName(buyer.buyerName!);
+      buyerBloc.changeContact(buyer.contactNum.toString());
+      buyerBloc.changeAddress(buyer.address!);
+      buyerBloc.changeDate(buyer.date!);
+      buyerBloc.changeNumtray(buyer.numofTray.toString());
+      buyerBloc.changePrice(buyer.unitPrice.toString());
+      buyerBloc.changePoultry(buyer.Poultry!);
+      buyerBloc.changeimageUrl(buyer.imageUrl ?? '');
     } else {
       buyerBloc.changeBuyerName('');
       buyerBloc.changeContact('');
@@ -212,6 +242,7 @@ class _EditBuyerState extends State<EditBuyer> {
       buyerBloc.changeNumtray('');
       buyerBloc.changePrice('');
       buyerBloc.changePoultry('');
+      buyerBloc.changeimageUrl('');
     }
   }
 }

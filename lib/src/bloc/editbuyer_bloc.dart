@@ -9,7 +9,7 @@ import 'package:uuid/uuid.dart';
 import 'package:thesis_auth/src/models/buyer_model.dart';
 import 'package:thesis_auth/src/services/firestore_service.dart';
 
-class BuyerBloc {
+class editBuyerBloc {
   final _buyerName = BehaviorSubject<String>();
   final _poultry = BehaviorSubject<String>();
   final _contactNumber = BehaviorSubject<String>();
@@ -87,7 +87,7 @@ class BuyerBloc {
     _isUploading.close();
   }
 
-  Future<void> addBuyer() async {
+  Future<void> editBuyer() async {
     var buyer = Buyers(
         timestamp: Timestamp.now(),
         buyerName: _buyerName.value.trim(),
@@ -97,10 +97,10 @@ class BuyerBloc {
         date: _date.value,
         numofTray: int.parse(_numberTray.value),
         unitPrice: double.parse(_price.value),
-        buyerId: uuid.v4(),
-        imageUrl: (_imageUrl != isEmpty) ? _imageUrl.value : "");
+        buyerId: _buyer.value.buyerId,
+        imageUrl: _imageUrl.value);
     return db
-        .addBuyer(buyer)
+        .editBuyer(buyer)
         .then((value) => _buyerSaved.sink.add(true))
         .catchError((error) => _buyerSaved.sink.add(false));
   }

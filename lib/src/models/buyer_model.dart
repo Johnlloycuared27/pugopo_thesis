@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Buyers {
   final String? buyerName;
   final String? Poultry;
@@ -8,8 +10,8 @@ class Buyers {
   final double? unitPrice;
   final String? buyerId;
   final String? imageUrl;
-  final bool? approved;
   final String? note;
+  final Timestamp? timestamp;
 
   Buyers({
     required this.buyerName,
@@ -20,8 +22,8 @@ class Buyers {
     required this.numofTray,
     required this.unitPrice,
     required this.buyerId,
+    required this.timestamp,
     this.imageUrl = "",
-    required this.approved,
     this.note = "",
   });
 
@@ -36,21 +38,21 @@ class Buyers {
       'unitPrice': unitPrice,
       'buyerId': buyerId,
       'imageUrl': imageUrl,
-      'approved': approved,
       'note': note,
+      'timestamp': timestamp
     };
   }
 
-  Buyers.fromFirestore(Map<String, dynamic> firestore)
-      : buyerName = firestore['buyerName'],
-        Poultry = firestore['Poultry'],
-        contactNum = firestore['contactNum'],
-        address = firestore['address'],
-        date = firestore['date'],
-        numofTray = firestore['numofTray'],
-        unitPrice = firestore['unitPrice'],
-        buyerId = firestore['buyerId'],
-        imageUrl = firestore['imageUrl'],
-        approved = firestore['approved'],
-        note = firestore['note'];
+  Buyers.fromFirestore(Map<String, dynamic>? firestore)
+      : buyerName = firestore?['buyerName'],
+        Poultry = firestore?['Poultry'],
+        contactNum = firestore?['contactNum'],
+        address = firestore?['address'],
+        date = firestore?['date'],
+        numofTray = firestore?['numofTray'],
+        unitPrice = firestore?['unitPrice'],
+        buyerId = firestore?['buyerId'],
+        imageUrl = firestore?['imageUrl'],
+        timestamp = firestore?['timestamp'],
+        note = firestore?['note'];
 }

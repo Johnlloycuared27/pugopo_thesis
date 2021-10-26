@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thesis_auth/src/screens/Header_drawer.dart';
 
+// ignore: camel_case_types
 class logOut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
